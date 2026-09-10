@@ -1,6 +1,8 @@
 services:
   app:
     build: .
+    ports:
+      - "8080:3000"
     environment:
       DATABASE_URL: postgres://app:app@db:5432/appdb
     depends_on:
@@ -14,14 +16,15 @@ services:
       POSTGRES_DB: appdb
     ports:
       - "5432:5432"
-    # could do persistent storage here but not needed in this app unless reviewer is fine with docker compose down -v all the time
-    # volumes:
-    #   - pgdata: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # postgres docker builtin to initialize dummy data
+      - ./init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app -d appdb"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-# volumes:
-#   pgdata:
+volumes:
+  pgdata:

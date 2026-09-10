@@ -1,5 +1,10 @@
 import { serve } from "bun";
-import index from "./index.html";
+import { createYoga } from 'graphql-yoga'
+import index from "../app/index.html";
+import db from "./db";
+
+const yoga = createYoga({
+})
 
 const server = serve({
   routes: {
@@ -27,6 +32,15 @@ const server = serve({
         message: `Hello, ${name}!`,
       });
     },
+
+    "/healthz": async () => {
+      try {
+        await db`SELECT 1`;
+        return Response.json({ status: "ok" });
+      } catch (err) {
+        return Response.json({ status: "error" }, { status: 503 });
+      }
+    }
   },
 
   development: process.env.NODE_ENV !== "production" && {
