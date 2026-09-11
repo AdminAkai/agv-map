@@ -1,15 +1,21 @@
 import { serve } from "bun";
 import { createYoga } from 'graphql-yoga'
+
 import index from "../app/index.html";
+import schema from "./schema";
 import db from "./db";
 
 const yoga = createYoga({
+  schema,
+  graphqlEndpoint: "/graphql"
 })
 
 const server = serve({
   routes: {
     // Serve index.html for all unmatched routes.
     "/*": index,
+
+    "/graphql": yoga,
 
     "/api/hello": {
       async GET(req) {
