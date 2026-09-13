@@ -28,7 +28,7 @@ export function useConnections(nodes: AgvNode[], maxNeighborDistance: number): C
     for (const group of connectedByX.values()) {
       group.sort((a, b) => a.y - b.y);
       for (let i = 0; i < group.length - 1; i++) {
-        const a = group[i], b = group[i + 1];
+        const a = group[i]!, b = group[i + 1]!;
         if (b.y - a.y <= maxNeighborDistance) addEdge(a, b);
       }
     }
@@ -42,7 +42,7 @@ export function useConnections(nodes: AgvNode[], maxNeighborDistance: number): C
     for (const group of byY.values()) {
       group.sort((a, b) => a.x - b.x);
       for (let i = 0; i < group.length - 1; i++) {
-        const a = group[i], b = group[i + 1];
+        const a = group[i]!, b = group[i + 1]!;
         if (b.x - a.x <= maxNeighborDistance) addEdge(a, b);
       }
     }
